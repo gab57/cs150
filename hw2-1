@@ -1,0 +1,333 @@
+#Gabrielle Beaulieu
+#assignment 2
+#9/25 CSCI 0150 B
+#extra points: triangles with fins, fish eyes, sea urchins, text
+
+from turtle import *
+from random import randint
+
+EYE="white"
+PUPIL="black"
+RADIUS=4
+BUBBLE="white"
+
+speed(0)
+
+def triangle(x,y,side):   
+    """
+    draws equilateral triangle with a vertical left side
+    
+    parameters--
+    x: x coordinate of top left vertex
+    y: y coordinate of top left vertex
+    side: side length in pixels
+    """
+    pu()     
+    goto(x,y)
+    pd()
+    begin_fill()
+    right(30)
+    for i in range(3): #drawing triangle
+        forward(side)
+        right(120)
+    end_fill()
+    pu() 
+    home()
+    
+    
+def polygon(x,y,n,side):
+    """
+    draws equilateral polygon
+    
+    parameters--
+    x: x coordinate of left vertex of topmost side
+    y: y coordinate of left vertex of topmost side
+    n: number of sides
+    side: side length in pixels
+    """
+    pu()
+    goto(x,y)
+    pd()
+    begin_fill()
+    for i in range(n): #drawing polygon
+        forward(side)
+        right(360/n)
+    end_fill()
+    pu()
+    home()   
+    
+
+def add_circles(n):
+    """
+    draws (n) number of randomly-placed circles of radius 4
+        half hollow, half filled
+        program will draw n-1 circles if n is odd
+    
+    parameters--
+    n: number of circles
+    """    
+    pencolor(BUBBLE)
+    for i in range(n//2): #drawing hollow circles
+        x=randint(-320,320)   
+        y=randint(-280,320)
+        pu()
+        goto(x,y)
+        pd()
+        circle(RADIUS)
+        pu()
+    for i in range(n//2): #drawing filled circles
+        x=randint(-320,320)   
+        y=randint(-280,320)
+        pu()
+        goto(x,y)
+        pd()
+        fillcolor(BUBBLE)
+        begin_fill()
+        circle(RADIUS)
+        end_fill()
+        pu()
+    home()
+    
+    
+def fish(x,y,side,penstring,fillstring):
+    """
+    draws a fish of modifiable color facing right
+    
+    parameters--
+    x: x coordinate of top left corner of fish body
+    y: y coordinate of top left corner of fish body
+    side: side length in pixels
+    penstring: pen color
+    fillstring: fill color
+    """
+    pu()     
+    goto(x,y) 
+    pd()
+    right(30)
+    pencolor(penstring)
+    fillcolor(fillstring)
+    begin_fill()
+    for i in range(3): #body triangle
+        forward(side)
+        right(120)
+    right(60) 
+    forward(0.5*side) #positioning pen for tail
+    right(120)
+    for i in range(3): #tail triangle
+        forward(0.3*side)
+        left(120)
+    end_fill()    
+    pu()
+    left(210) 
+    forward(.6*side) #positioning pen for eyeball
+    pd()
+    fillcolor(EYE)
+    begin_fill()
+    circle(.1*side) #eyeball circle
+    end_fill()
+    pu()
+    forward(.1*side) #positioning pen for pupil
+    left(90)
+    forward(.1*side) #positioning pen for pupil
+    pd()
+    fillcolor(PUPIL)
+    begin_fill()
+    circle(.04*side) #pupil circle
+    end_fill()
+    pu()     
+    forward(.055*side) #positioning pen for eyebrow
+    left(50)
+    pd()
+    forward(0.15*side) #eyebrow
+    pu()
+    home()
+  
+  
+def fish2(x,y,side,penstring,fillstring):
+    """
+    draws a fish of modifiable color facing left
+    
+    parameters--
+    x: x coordinate of top right corner of fish body
+    y: y coordinate of top right corner of fish body
+    side: side length in pixels
+    penstring: pen color
+    fillstring: fill color
+    """
+    pu()     
+    goto(x,y) 
+    pd()
+    left(150)
+    pencolor(penstring)
+    fillcolor(fillstring)
+    begin_fill()
+    for i in range(3): #body triangle
+        forward(side)
+        right(120)
+    right(60)
+    forward(0.5*side) #positioning pen for tail
+    right(120)
+    for i in range(3): #tail triangle
+        forward(0.3*side)
+        left(120)  
+    end_fill()    
+    left(210)
+    pu()
+    forward(.5*side) #positioning pen for eyeball
+    right(90)
+    forward(0.2*side) #positioning pen for eyeball
+    left(90)
+    forward(0.1*side) #positioning pen for eyeball
+    pd()
+    fillcolor(EYE)
+    begin_fill()
+    circle(.1*side) #eyeball circle
+    end_fill()
+    pu()
+    forward(.1*side) #positioning pen for pupil
+    left(90)
+    forward(.1*side) #positioning pen for pupil
+    pd()
+    fillcolor(PUPIL)
+    begin_fill()
+    circle(.04*side) #pupil circle
+    end_fill()
+    pu() 
+    right(180)    
+    forward(.055*side) #positioning pen for eyebrow
+    right(50)
+    pd()
+    forward(0.15*side) #eyebrow
+    pu()
+    home()
+    
+    
+def color_polygon(x,y,n,side,penstring,fillstring):
+    """
+    draws equilateral polygon of modifiable color
+    
+    parameters--
+    x: x coordinate of left vertex of topmost side
+    y: y coordinate of left vertex of topmost side
+    n: number of sides
+    side: side length in pixels
+    penstring: pen color
+    fillstring: fill color
+    """
+    pu()
+    goto(x,y)
+    pd()
+    left(180)
+    pencolor(penstring)
+    fillcolor(fillstring)
+    begin_fill()
+    for i in range(n): #drawing polygon
+        forward(side)
+        right(360/n)
+    end_fill()    
+    pu()
+    home()
+
+
+def color_rectangle(x,y,length,width,penstring,fillstring):
+    """
+    draws rectangle of dimensions length and width
+    
+    parameters--
+    x: x coordinate of left vertex of topmost side
+    y: y coordinate of left vertex of topmost side    
+    length: length of rectangle in pixels
+    width: width of rectangle in pixels
+    penstring: pen color
+    fillstring: fill color
+    """
+    pu()
+    goto(x,y)
+    pd()
+    pencolor(penstring)
+    fillcolor(fillstring)
+    begin_fill()
+    for i in range(2): #drawing ocean floor shape
+        forward(length)
+        right(90)
+        forward(width)
+        right(90)
+    pu()
+    end_fill()
+    home()
+
+
+def star(x,y,n,side,penstring,fillstring):
+    """
+    draws star of modifiable color with n sides
+    
+    parameters--
+    x: x coordinate of middle, left point
+    y: y coordinate of middle, left point
+    n: number of sides on star
+    side: side length in pixels
+    penstring: pen color
+    fillstring: fill color
+    """
+    angle = 180/n
+    pu()    
+    goto(x,y)
+    pd()
+    pencolor(penstring)
+    fillcolor(fillstring)
+    begin_fill()
+    for i in range(n):
+        forward(side)
+        left(180-angle)
+    end_fill()
+    pu()
+    home()
+
+
+def fish_fight(x,y):
+    """
+    writes "FISH FIGHT" at location (x,y)
+    
+    parameters--
+    x: x coordinate of top left of first letter 
+    y: y coordinate of top left of first letter
+    """
+    goto(x,y)
+    pd()
+    write("FISH FIGHT","center", font=("georgia",50))
+    pu()
+    home()
+
+bgcolor("light blue") #ocean 
+add_circles(30) #bubbles
+color_rectangle(-320,-250,630,40,"brown","tan") #ocean floor
+
+color_polygon(-250,-260,5,20,"dark grey","grey") #rock
+color_polygon(-165,-260,5,20,"dark grey","grey") #rock
+color_polygon(-20,-260,5,20,"dark grey","grey") #rock
+color_polygon(-50,-270,5,20,"dark grey","grey") #rock
+color_polygon(280,-270,5,20,"dark grey","grey") #rock
+color_polygon(-200,-270,7,30,"dark grey","grey") #rock
+
+star(220,-260,9,30,"blue","purple") #sea urchin
+star(-260,-260,9,30,"purple","aqua") #sea urchin
+star(-200,-270,11,30,"blue","purple") #sea urchin
+
+fish(-180,-100,80,"black","orange") #fish
+fish(-135,75,150,"black","orange") #fish
+fish(-300,5,100,"black","orange") #fish
+fish(-100,170,50,"black","orange") #fish
+fish(-250,230,100,"black","orange") #fish
+fish(-215,90,30,"black","orange") #fish
+
+fish2(180,-220,90,"black","turquoise") #fish
+fish2(300,5,60,"black","turquoise") #fish
+fish2(100,160,40,"black","turquoise") #fish
+fish2(240,95,95,"black","turquoise") #fish
+fish2(235,-95,60,"black","turquoise") #fish
+fish2(135,-75,150,"black","turquoise") #fish
+
+fish_fight(-135,230) #text
+
+goto(320,320)#removing pen from picture
+done()
