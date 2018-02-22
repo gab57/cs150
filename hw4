@@ -1,0 +1,143 @@
+ #Gabrielle Beaulieu
+#assignment 4
+#CSCI B 9/14/15
+#extra points:
+    #additional feedback during guessing
+    #levels of difficulty
+    #varied performance summaries based on efficiency
+
+
+from random import *
+import random
+import math
+import time
+
+ops = [" + "," - "," * "]
+
+def random_equation(num):
+    """
+    Prints a string equation with num operators and num +1 numbers
+    Operaters are randomly chosen from -,+, or *
+    Numbers are randomly chosen integers from 1-10
+    """
+    equation = str(randint(1,10)) #first number of equation
+    for i in range(num):
+        equation = equation + random.choice(ops) + str(randint(1,10))
+    return(equation)
+
+
+def query_equation(string):
+    """
+    Poses equation from random_equation, waits for player's response
+    Prints various statements depending on response's proximity to
+    the actual value of equation
+    """
+    correct = False
+    while not False:
+        correct = eval(string) #evaluating equation
+        response = int(input(string + " = "))
+#        if response == "": #in case of no answer
+#            print("Come on, it's just math! You can do it!")
+        if response == correct: #for correct answer
+            print("Correct!" )
+            return
+        #in case of wrong answers
+        elif response <= (correct+2) and response >= (correct-2):
+            print("Close. Try again." )
+        elif response >= (correct+3) and response <= (correct+15):
+            print("Too high. Keep guessing..." )
+        elif response <= (correct-3) and response >= (correct-15):
+            print("You're too low. Guess again." )
+        else:
+            print("Not even close! Try again!!!" )
+
+
+def play_game(sec,lev):
+    """
+    Starts a game for (sec) seconds. Game offers new equations
+    until sec seconds have passed. Game finishes after the last
+    equation it offers is answered correctly (no interruption)
+
+    Parameters--
+    sec: number of seconds
+    lev: level of equation (1, 2, or 3)
+    """
+    T1 = time.time() #determining start time
+    T2 = T1 + sec #determining end time
+    count = 0
+
+    #level of difficulty
+    if lev == 1:
+        while time.time() < T2:
+            query_equation(random_equation(1))
+            count += 1
+        print("Ok, you are out of time!")
+    elif lev == 2:
+        while time.time() < T2:
+            query_equation(random_equation(randint(2,4)))
+            count += 1
+        print("Ok, you are out of time!")
+    elif lev == 3:
+        while time.time() < T2:
+            query_equation(random_equation(randint(5,10)))
+            count += 1
+        print("Ok, you are out of time!")
+
+    #performance summaries for a single question
+    if (sec/count) > 20 and count == 1:
+        print("You only got 1 question right in 20 seconds..\
+        you should get studying!")
+    elif (sec/count) < 20 and (sec/count) >10 and count == 1:
+        print("You got 1 question right in "
+        + str(sec) + " seconds at level " + str(lev) +
+        ". Pretty good.")
+    elif (sec/count) < 10 and (sec/count) > 5 and count == 1:
+        print("You got 1 question right in "
+        + str(sec) + " seconds at level " + str(lev) +
+        ". Good job!!")
+    elif (sec/count) < 5 and count == 1:
+        print("You got 1 question right in "
+        + str(sec) + " seconds at level " + str(lev) +
+        ". Awesome job!!!")
+
+    #performance summaries for multiple questions
+    elif (sec/count) > 20 and count != 1:
+        print("Yikes..you got just" + str(count) + " questions \
+        right in " + str(sec) + " seconds at level " +
+        str(lev) + ". You're a little rusty!")
+    elif (sec/count) < 20 and (sec/count) > 10 and count != 1:
+        print("You got " + str(count) + " questions right in "
+        + str(sec) + " seconds at level " + str(lev) +
+        ". Not bad.")
+    elif (sec/count) < 10 and (sec/count) > 5 and count != 1:
+        print("You got " + str(count) + " questions right in "
+        + str(sec) + " seconds at level " + str(lev) +
+        ". Good job!!")
+    elif (sec/count) < 5 and  (sec/count) > 3 and count != 1:
+        print("You got " + str(count) + " questions right in "
+        + str(sec) + " seconds at level " + str(lev) +
+        ". Awesome job!!!")
+    else:
+         print("WOW!!! You got " + str(count) + " questions right in "
+        + str(sec) + " seconds at level " + str(lev) +
+        ". You're a true math whiz!")
+
+
+#opening text & welcome
+print("Welcome to Math Whiz!")
+print("-"*10)
+print("This game will test how many simple math equations you \
+can answer correctly in a set amount of time!")
+
+#initial user interface
+reply = input("So do you want to play a game? ")
+affirmative = "yes"
+if reply == affirmative:
+    sec = int(input("How many seconds do you want to play for? "))
+    lev = int(input("Level 1, 2, or 3? "))
+    print("-"*10)
+    print("GO! Respond to the equations as fast as you can.")
+    play_game(sec,lev)
+    print("Thanks for playing!")
+else:
+    print("Ok, maybe next time. Have a nice day!")
