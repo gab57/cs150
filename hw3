@@ -1,0 +1,151 @@
+#Gabrielle Beaulieu
+#assignment 3 CSCI 0150 B
+#9/2/15
+
+from random import *
+ALPHABET = "abcdefghijklmnopqrstuvwxyz "
+
+
+# fool's encryption/decryption (section 2)
+def fools_encrypt(message):
+    """
+    Encrypts a message by tripling the frequency each character
+    """
+    encryption = "" #empty string    
+    for i in range(len(message)):
+        encryption= encryption + message[i]*3 #triples each character
+    return encryption
+    
+def fools_decrypt(encryption):
+    """
+    Decrypts messages encrypted by fools_encrypt by reducing 
+    frequency of characters to normal
+    """
+    decryption = "" #empty string
+    for i in range(len(encryption)//3):
+        decryption= decryption + encryption[i*3] #takes every third character
+    return decryption
+
+
+# caesar's method (section 3)
+def shift_letter(letter, num):
+    """
+    Shifts a letter up num places in the alphabet with
+    wraparound
+    """
+    # get the index of the current letter
+    index = ALPHABET.find(letter)
+    # we use the mod operator (%) for wraparound
+    return ALPHABET[(index + num) % len(ALPHABET)]
+
+def caesar_encrypt(message, num):
+    """
+    Encrypts a message by swapping each letter for one num places
+    later in the alphabet with wraparound
+    """    
+    encryption="" #empty string
+    for i in range(len(message)): 
+        #shifts letters num places
+        encryption = encryption + shift_letter(message[i],num)
+    return encryption
+    
+
+# substitution cipher (section 4)
+def splice(message, letter):
+    """
+    Splices out letter from message and returns the 
+    remaining message. letter can only occur ONCE in
+    the message
+    """
+    #finds position of letter in message
+    index= message.find(letter)
+    #returns message without letter 
+    return(message[:index] + message[(index+1):])
+
+def keygen(password):
+    """
+    Given a string password, generates a new random key.
+    A key consists of a random ordering of the letters in
+    ALPHABET
+    """
+    remaining = ALPHABET
+    key = "" #empty string
+    
+    seed(hash(password))
+    
+    for i in range(len(ALPHABET)):
+        index = randint(0, len(remaining)-1)
+        next_letter = remaining[index]
+        key = key + next_letter
+        remaining = splice(remaining, next_letter)
+    return key
+    
+def subst_encrypt(message, key):
+    """
+    Encrypts a message by swapping each letter of message
+    for the corresponding letter of a randomly generated key
+    """
+    encryption = "" #empty string    
+    for i in range(len(message)):
+        #finds current letter
+        letter = message[i]
+        #finds index of current letter in ALPHABET
+        index = ALPHABET.find(letter)
+        #builds encryption by adding corresponding letter of key
+        encryption = encryption + key[index]
+    return encryption
+    
+def subst_decrypt(encryption, key):
+    """
+    Decrypts a message by swapping each letter of the decryption
+    for the letter of the alphabet corresponding to key 
+    """    
+    decryption = "" #empty string
+    for i in range(len(encryption)):
+        #finds current letter
+        letter = encryption[i]
+        #finds index of letter in key
+        index = key.find(letter)
+        #builds decryption by adding corresponding letter of ALPHABET
+        decryption = decryption + ALPHABET[index]
+    return decryption
+
+#extra points
+def shift(num):
+    """
+    Generates key of ALPHABET shifted num places
+    """
+    key = "" #empty string
+    for i in range(len(ALPHABET)):
+        index = i
+        #finds letter num places further in ALPHABET
+        letter = ALPHABET[(index+num) % len(ALPHABET)]
+        key = key + letter
+    return key
+
+def my_encrypt(message):
+    """
+    Encrypts a message using given key
+    """
+    key = "1wyl2zur3ois4qcd5kjn6vbm7ep"
+    encryption = "" #empty string
+    for i in range(len(message)):
+        index = ALPHABET.find(message[i])
+        encryption = encryption + key[index]
+    return encryption
+    
+def my_decrypt(encryption):
+    """
+    Decrypts an encryption using given key
+    """
+    key = "1wyl2zur3ois4qcd5kjn6vbm7ep"
+    decryption = "" #empty string
+    for i in range(len(encryption)):
+        index = key.find(encryption[i])
+        decryption = decryption + ALPHABET[index]
+    return decryption
+
+
+    
+
+    
