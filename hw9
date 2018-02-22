@@ -1,0 +1,167 @@
+ 
+"""
+Some functions for drawing recursive designs with turtle graphics
+"""
+
+#Gabrielle Beaulieu
+#assignment 9 part 2
+#CSCI 0150 B
+#11/24/15
+#extra points: sir_pinski function, color coolness w/ stairs & sir_pinski
+
+from turtle import *
+
+def recursive_H(x,y,length,levels):
+    """
+    draws H design, recursively
+    
+    Parameters--
+    x: x coordinate at center of horizontal line 
+    y: y coordinate at center of horizontal line
+    length: the length of vertical lines of H
+    levels: the number of recursive levels to be drawn
+    """
+    single_H(x,y,length)
+
+    if levels == 1:
+        goto((x-length),(y+length/2))
+        dot(3,"blue")
+        goto((x-length),(y-length/2))
+        dot(3,"blue")
+        goto((x+length),(y+length/2))
+        dot(3,"blue")
+        goto((x+length),(y-length/2))
+        dot(3,"blue")
+    else:
+        recursive_H((x-length),(y+length/2),(length/2),(levels-1))
+        recursive_H((x-length),(y-length/2),(length/2),(levels-1))
+        recursive_H((x+length),(y+length/2),(length/2),(levels-1))
+        recursive_H((x+length),(y-length/2),(length/2),(levels-1))
+    
+
+def single_H(x,y,length):
+    """
+    Draws a single H 
+    
+    Parameters--
+    x: x coordinate at center of horizontal bar
+    y: y coordinate at center of horizontal bar
+    length: length of vertical lines of H; horizontal line is 2H
+    """
+    pu()
+    goto((x-length),y)
+    pd()
+    forward(length*2)
+    pu()
+    goto((x-length),(y+length/2))
+    right(90)
+    pd()
+    forward(length)
+    pu()
+    goto((x+length),(y+length/2))
+    pd()
+    forward(length)
+    left(90)
+    pu()
+    
+
+def stairs(x,y,length,r=0.8,g=0.8,b=1):
+    """
+    Draws a stair design, returns number of squares drawn; writes this
+    number below design as well
+    
+    Parameters--
+    x: the x coordinate of the bottom left corner of the first square
+    y: the y coordinate of the bottom left corner of the first square
+    length: the side length of the first square
+    r: number between 0 and 1, the r (red) value of rgb coloring
+    g: number between 0 and 1, the g (green) value of rgb coloring
+    b: number between 0 and 1, the b (blue) value of rgb coloring
+    
+    r,g, and b have default values of 1
+    
+    Note: more than 10 recursions will cause errors
+    """
+    pu()
+    goto(x,y)
+    pd()
+    fillcolor(r,g,b)
+    begin_fill()
+    for i in range(2):
+        forward(length)
+        left(90)
+        forward(length)
+        left(90)
+    end_fill()
+    pu()
+    goto(x,y)
+    
+    if length < 3:
+        return 1
+    else:
+        s1 = stairs(x,(y+length),(length/2),r,g-0.08,b) #extra points (colors)
+        s2 = stairs((x+length),y,(length/2),r-0.08,g-0.08,b)
+        return s1 + s2 + 1
+
+
+def write_words(x,y,num):
+    """
+    Writes "Stairs with num squares" at location x,y
+    """
+    pu()
+    goto(x,y)
+    write("Stairs with " + str(num) + " squares",
+          "center", font=("arial",25,"normal"))
+    pd()
+
+
+def sir_pinski(x,y,length,r=1,g=1,b=1): #extra points
+    """
+    draws a version of Sierpinski's triangle in AwEsOmE color
+    
+    Parameters--
+    x: x coordinate of lower left corner of main triangle
+    y: y coordinate of lower left corner of main triangle
+    length: length of side of biggest triangle
+    r: number between 0 and 1, the r (red) value of rgb coloring
+    g: number between 0 and 1, the g (green) value of rgb coloring
+    b: number between 0 and 1, the b (blue) value of rgb coloring
+    
+    r,g, and b have default values of 1
+    
+    Note: more than 10 recursions will cause errors
+    """
+    pu()
+    goto(x,y)
+    pd()
+    fillcolor(r,g,b)
+    begin_fill()
+    for i in range(3):
+        forward(length)
+        left(120)
+    end_fill()
+    
+    if length < 10:
+        return 1
+    else:
+        triheight = (length**2 - ((length/2)**2))**(1/2)
+        
+        sir_pinski(x,y,(length/2),r,g-0.1,b-0.1)
+        sir_pinski((x+length/2),y,(length/2),r-0.1,g-.1,b)
+        sir_pinski((x+length/4),(y+triheight/2),(length/2),r-0.1,g,b-0.1)
+
+    
+if __name__ == "__main__":
+    hideturtle()
+    tracer(0,0)
+    stairs(-150,-200,128)
+    write_words(-150,-250,stairs(-150,-200,128))
+    update()
+    done()
+    
+hideturtle()
+tracer(0,0)
+sir_pinski(-200,-200,250)
+update()
+done()
+    
