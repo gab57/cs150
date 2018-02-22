@@ -1,0 +1,77 @@
+#Gabrielle Beaulieu
+#assignment 1
+#9/21 CSCI 0150 B
+
+#printing numbers
+print(8*6)
+print(4)
+print(98/253)
+
+#dealing with pi
+pi=22/7#assigning value to pi
+print(pi)#printing value of pi
+
+#printing strings
+print('hello world')
+print('week 2 at midd')
+print('the food is great here')
+
+#defining circle_area
+def circle_area(radius):
+    return(radius**2*pi)
+    
+#printing circle area by calling function
+print(circle_area(2))
+
+#conversion from euros to us dollars
+def euros_to_dollars(euros):
+    return(euros*1.12)
+
+#translation of "welcome" from english to french
+def welcome():
+    return("bienvenue")
+    
+#conversion of kilometers to miles
+def kilometers_to_miles(kilometers):
+    return(kilometers*0.62)
+    
+#conversion of metric fuel efficiency to imperial (aka mpg)
+def mpg_from_metric(kilometers, liters):
+    gallons=liters*0.26
+    miles=kilometers*0.62
+    return(miles/gallons)
+
+#conversion of european shoe size to american shoe size
+def european_shoe_to_american(european):
+    return(european-30.5)
+
+#conversion of liters to gallons
+def liters_to_gallons(liters):
+    return(liters*0.26)
+
+#another conversion of metric fuel efficiency to imperial (aka mpg)
+def mpg_from_metric_2(kilometers, liters):
+    return(kilometers_to_miles(kilometers)/liters_to_gallons(liters))
+
+#conversion of pounds to dollars
+#because the british are too cool for the euro
+def pounds_to_dollars(pounds):
+    return(pounds*1.55)
+    
+
+    
+    
+
+    
+
+
+    
+    
+    
+
+    
+
+    
+    
+   
+    
