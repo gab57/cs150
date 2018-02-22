@@ -1,0 +1,113 @@
+#Gabrielle Beaulieu
+#Assignment 6
+#CSCI 0150 B
+#10/30/15
+#extra points: guess filter, additional feedback based on player efficiency
+
+import random
+
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+def read_words(file):
+    """
+    Converts words in a file to a list
+    """
+    wordfile = open(file, "r")
+    text = []
+    for line in wordfile:
+        text.append(line.strip())
+    wordfile.close()
+    return text
+
+def set_to_string(set1):
+    """
+    Takes elements of a set and puts them into string, with each
+    separated by a space
+    """
+    string = ""
+    for v in set1:
+        string += (str(v) + " ")
+    return string
+
+def insert_letter(guess,prev,word):
+    """
+    Fills in correctly guessed letters in word; all parameters should be
+    input as strings
+
+    Parameters--
+    guess: the letter guessed by hangman player
+    prev: the previous guessed letters and underscores of word
+    word: the word being guessed in the game
+    """
+    guess = guess.lower() #normalizing case
+    inserted = "" #empty string
+    for i in range(len(word)):
+        if guess == word[i]:
+            inserted += word[i]
+        else:
+            inserted += prev[i]
+    return inserted
+
+
+def hangman(wordlist,guesses):
+    """
+    Runs hangman game
+
+    Parameters--
+    wordlist: list of words word is randomly chose from
+    guesses: number of allowed incorrect guesses in game
+    """
+    word = random.choice(read_words(wordlist))
+    word = word.lower()
+
+    letters = set() #creating empty set
+    wrong = 0 #initializing wrong tally
+    guessedword = "_" * len(word) #initializing guessedword
+    guess = "_" #providing first round guess
+    game = "playing"
+
+    while game == "playing":
+
+        if guessedword != word and wrong <= guesses:
+            print("-" *15)
+            print("Guessed letters: " + set_to_string(letters))
+            print("Incorrect guesses left: " + ("*" * (guesses-wrong)))
+            guessedword= insert_letter(guess,guessedword,word)
+            print("Word: " + guessedword)
+
+            if guessedword == word: #if player guesses word
+                game = "over"
+                print("Yay! You win!")
+                print("The word was: " + word)
+                print("You got it with " + str(wrong) + " wrong guesses!")
+                if wrong == guesses: #extra points
+                    print("That was a close one!")
+                if wrong < guesses / 2: #extra points
+                    print("Nice work!")
+                if wrong < guesses - 1: #extra points
+                    print("Fantastic guessing!")
+                return
+
+            guess = input("\nGuess a letter: ")
+
+            guess = guess.upper() #normalizing case
+            if guess in letters:
+                print("Whoops! You already guessed that letter. Pick again!")
+
+            elif len(guess) != 1 and ALPHABET.find(guess) == -1:
+                print("That's not a letter! Pick again") #extra points
+
+            elif word.find(guess.lower()) == -1:
+                wrong += 1
+                letters.add(guess) #adding guessed letters to set
+
+            else:
+                letters.add(guess) #adding guessed letters to set
+        elif wrong >= guesses: #if player fails to guess word
+            game = "over"
+            print("Sorry! You lose! The word was: " + word)
+            print("Better luck next time!")
+            return
+
+
+print("\nWelcome to Hangman!!!")
+hangman("cs_words.txt",7)
