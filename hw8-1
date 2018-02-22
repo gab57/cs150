@@ -1,0 +1,82 @@
+#Gabrielle Beaulieu
+#CSCI 0150 B
+#assignment 8
+#11/17/15
+
+"""
+Program that aggregates weather data from an external API
+"""
+
+import weather_reader
+import datetime
+import sys
+
+
+def current_hour():
+    """
+    Returns current hour in 24 hour time
+    """
+    now = datetime.datetime.now()
+    return str(now.hour)
+    
+    
+def current_date():
+    """
+    Returns current date, MM-DD-YYYY format
+    """
+    now = datetime.datetime.now()
+    return str(now.month) + "-" + str(now.day) + "-" + str(now.year)
+            
+            
+def current_date_hour():
+    """
+    Returns current date and hour, MM-DD-YYYY \t HOUR format
+    """
+    datehour = current_date() + "\t" + current_hour()
+    return datehour
+
+
+def time_in_file(filename):
+    """
+    Returns True if current time is in a given file, else False
+    """
+    file = open(filename, "r")
+    for line in file:
+        if (current_date_hour()) in line:
+            file.close()
+            return True
+    file.close()
+    return False
+    
+                     
+def write_file(filename,zipcode):
+    """
+    If entry for current time is not in filename, adds current date/time
+    and temperature of area zipcode to filename
+    """
+    if time_in_file(filename) == False:
+        temp = weather_reader.get_temperature(zipcode)
+        
+        file = open(filename, "a")
+        file.write(current_date_hour() + "\t"
+        + str(temp) + "\n")
+        file.close()
+        return
+    else:
+        return
+
+ 
+if __name__ == "__main__":
+
+    if len(sys.argv) != 3:
+        print()
+        print("usage: python3 waether_reader.py <file> <zipcode>")
+        print()
+    else:
+        write_file(sys.argv[1],sys.argv[2])
+      
+        
+    
+
+
+
