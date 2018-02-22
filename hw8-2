@@ -1,0 +1,69 @@
+#Gabrielle Beaulieu
+#CSCI 0150 B
+#assignment 8
+#11/17/15
+#extra points: checks zip code validity
+
+"""
+Program that grabs weather data for a zipcode from an API 
+"""
+
+import urllib.request
+import sys
+
+CONSTINTS = "0123456789"
+
+def find_temp(url):
+    """
+    Reads webpage and splices temperature out of a string by finding 
+    preceding text then splicing accordingly    
+    """
+    web_page = urllib.request.urlopen(url)
+    
+    for line in web_page:        
+        line = line.decode('ascii', 'ignore')
+        temp_cue = '"temp":'
+        temp = ""
+        if temp_cue in line: 
+            
+            start = line.find(temp_cue) + len(temp_cue)
+            end = line.find(',', start)
+            
+            temp = line[start:end]
+        return temp
+
+def get_temperature(zipcode):
+    """
+    Takes parameter of a zipcode and prints the temperature of that zip
+    """
+    temp = find_temp(generate_url(zipcode))
+    
+    return temp
+
+def is_zip(zipcode):
+    if len(zipcode) != 5:
+        return False
+    elif len(zipcode) == 5:
+        for z in zipcode:
+            if z not in CONSTINTS:
+                return False
+    return True
+    
+    
+def generate_url(zipcode):
+    return ("http://api.openweathermap.org/data/2.5/weather?zip=" +
+    str(zipcode) + ",us&appid=1150ff280ea88cbea0f8dc404b3ccf8a&units=imperial")
+
+    
+if __name__ == "__main__":
+
+    if len(sys.argv) != 2:
+        print()
+        print("usage: python3 weather_reader.py <zipcode>")
+        print()
+    else:
+        if is_zip(sys.argv[1]) == True:
+            print(get_temperature(sys.argv[1]))
+        else:
+            print("Please enter a valid zip code.")
+    
