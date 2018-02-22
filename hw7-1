@@ -1,0 +1,216 @@
+#Gabrielle Beaulieu
+#assignment 7
+#CSCI 0150
+#11/10/15
+#extra points: handles punctuation, gives longest/shortest word 
+from matplotlib import pyplot
+
+
+def read_text(file):
+    """
+    Returns the words of a given text in a list; words are
+    assumed to be separated by a space. Removes punctuation 
+    if it exists
+    """
+    wordfile = open(file, "r")
+    text = ""
+    
+    for d in wordfile:
+        text += d
+    
+    templist = text.split()
+    
+    words = []
+    for word in templist: #getting rid of punctuation
+        if "." in word:
+            words.append(word[:-1])
+        elif "?" in word:
+            words.append(word[:-1])
+        elif "!" in word:
+            words.append(word[:-1])
+        else:
+            words.append(word)
+            
+    wordfile.close()
+    return words
+    
+    
+def frequency(list1):
+    """
+    Returns a dictionary with words of a list as keys and their
+    frequencies as values
+    """
+    d = {}
+    seen = set()
+    
+    for i in range(len(list1)):
+        list1[i] = list1[i].lower()
+        
+        if list1[i] in seen:
+            d[list1[i]] += 1
+        else:
+            d[list1[i]] = 1
+            seen.add(list1[i])
+            
+    return d
+    
+    
+def freq_frequencies(dict1):
+    """
+    Returns a new dictionary where keys are the values of dict1
+    and values are their frequencies in dict1
+    """
+    d = {}
+    seen = set()
+    
+    for key in dict1:
+        value = dict1[key]
+        if value in seen:        
+            d[value] += 1
+        else:
+            d[value] = 1
+            seen.add(value)
+    return d
+    
+    
+def my_range(start, stop, step=1):
+    """
+    Returns list of numbers from start until stop -1 in increments
+    of step (step default is 1)
+    """
+    range = []
+    z = start
+    
+    while z < stop:
+        range.append(z)
+        z += step
+        
+    return range
+    
+    
+def largest_value(dict1,keyorval):
+    """
+    Takes a dictionary and returns the greatest of either its keys or values
+    (to be used when keys or values are known to be numbers)
+    
+    parameters--
+    dict 1: the dictionary to be drawn from
+    keyorval: input either "k" for key or "v" for value
+    """
+    temp = 0
+    if keyorval == "k":
+        for key in dict1:
+            if int(key) > temp:
+                temp = int(key)
+        return temp
+    else:
+        for key in dict1:
+            val = dict1[key]
+            if int(val) > temp:
+                temp = int(val)
+        return temp
+        
+        
+def plot(L1,L2):
+    """
+    Plots graph of data in two lists; lists are assumed to be same
+    length
+    """
+    x = L1  
+    y = L2
+    
+    pyplot.plot(x,y)
+    pyplot.xlabel("Word occurence")
+    pyplot.ylabel("Number of words that occur x times")
+    pyplot.title("Plot of Word Frequencies")
+    pyplot.show()
+
+  
+def get_ylist(xlist,dict1):
+    """
+    Builds an appropriate y list of data points, with 0 as y
+    when the x value does not appear in the dictionary
+    """
+    ylist = [] 
+    for d in xlist:
+
+        if d in dict1:
+            ylist.append(int(dict1[d]))
+        else:
+            ylist.append(0)
+    return ylist
+    
+def extreme_words(list1, longorshort):
+    """
+    Prints either the longest or shortest of a list
+    
+    parameters--
+    list1: the list to be analyzed
+    longorshort: input "s" for shortest word, "l" for longest
+    """
+    if longorshort == "l":
+        longest = ""
+        for word in list1:
+            if len(word) > len(longest):
+                longest = word
+        print("The longest word is " + longest + ", with " +
+            str(len(longest)) + " letters.")
+    else:
+        shortest = "xxxxxxxxxxx"
+        for word in list1:
+            if len(word) < len(shortest):
+                shortest = word
+        if len(shortest) == 1:        
+            print("The shortest word is " + shortest + 
+            ", with 1 letter.")
+        else:
+            print("The longest word is " + longest + ", with " +
+                str(len(longest)) + " letters.")
+        
+def invert_dict(dict1):
+    """
+    Returns a new dictionary where keys and values of my_dict have
+    swapped for one another
+    """
+    d = {}
+
+    for key in dict1:
+        val = dict1[key]
+        d[val] = key
+
+    return d
+    
+    
+def print_top_ten(dict1):
+    """
+    Prints out top 10 most frequently occuring words with
+    their frequencies
+    """
+    dict2 = invert_dict(dict1)
+    print("The 10 most frequent words are:")
+
+    for i in range(10):
+        temp = largest_value(dict2,"k")
+        print(str(dict2[temp]) + "\t" + str(temp))
+        del dict2[temp]
+    return        
+    
+    
+def run_program(filename):
+    """
+    Prints top 10 frequency words and draaws a graph of frequencies
+    of frequencies
+    """
+    freq_dict = frequency(read_text(filename))
+    freq_freq = freq_frequencies(freq_dict)
+    
+    xlist = my_range(1,(largest_value(freq_dict,"v")+1))
+    ylist = get_ylist(xlist,freq_freq)
+    
+    plot(xlist,ylist)
+    print_top_ten(freq_dict)
+    
+    extreme_words(read_text(filename),"l")
+    extreme_words(read_text(filename),"s")
+    
+    return
